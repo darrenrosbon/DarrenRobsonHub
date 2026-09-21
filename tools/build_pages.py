@@ -12,7 +12,7 @@ SITE = Path(__file__).resolve().parents[1]  # the site root, one level up from t
 # so rerun the script after editing index.html too.
 TODAY = date.today()
 UPDATED = f'Last updated <time datetime="{TODAY.isoformat()}">{TODAY:%B %Y}</time>'
-CSS_V = 32
+CSS_V = 33
 ORIGIN = 'https://darrenrosbon.github.io/DarrenRobsonHub/'
 
 CERTS = [
@@ -91,7 +91,6 @@ SPRITE = '''<svg width="0" height="0" style="position:absolute" aria-hidden="tru
   <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16 16 8M9 8h7v7"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
-  <symbol id="i-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></symbol>
 </svg>'''
@@ -123,9 +122,8 @@ def page(*, title, description, path, back_href, back_label, main, og, og_alt, h
 <title>{title}</title>
 <meta name="description" content="{description}">
 <meta name="author" content="Darren Robson">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141518">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="{ORIGIN}{path}">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/icons/icon-32.png" sizes="32x32" type="image/png">
@@ -140,7 +138,7 @@ def page(*, title, description, path, back_href, back_label, main, og, og_alt, h
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{og_alt}">
 <meta name="twitter:card" content="summary_large_image">
-<script>(() => {{ try {{ const t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') {{ document.documentElement.dataset.theme = t; document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {{ m.content = t === 'dark' ? '#141518' : '#ffffff'; }}); }} }} catch {{}} }})();</script>
+<script>(() => {{ try {{ if (localStorage.getItem('theme') === 'dark') {{ document.documentElement.dataset.theme = 'dark'; document.querySelector('meta[name="theme-color"]').content = '#141518'; }} }} catch {{}} }})();</script>
 <link rel="stylesheet" href="../styles.css?v={CSS_V}">{head_extra}
 {SPECULATION}
 </head>
@@ -153,7 +151,7 @@ def page(*, title, description, path, back_href, back_label, main, og, og_alt, h
   <div class="wrap nav__in">
     <a class="nav__mark" href="../index.html"><img src="../assets/headshot-160.webp" alt="" width="30" height="30"><span class="nav__name">Darren Robson</span></a>
     <div class="nav__tools">
-      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Appearance: Automatic. Switch to Light"><svg aria-hidden="true"><use href="#i-auto"/></svg></button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Appearance: Light. Switch to Dark"><svg aria-hidden="true"><use href="#i-sun"/></svg></button>
       <a class="back" href="{back_href}"><svg aria-hidden="true"><use href="#i-left"/></svg>{back_label}</a>
     </div>
   </div>
@@ -166,7 +164,7 @@ def page(*, title, description, path, back_href, back_label, main, og, og_alt, h
 </footer>
 <button class="to-top" type="button" aria-label="Back to top" title="Back to top"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></button>
 <p class="sr" role="status" aria-live="polite" id="status"></p>
-<script src="../common.js?v=1" defer></script>{BACK_SCRIPT}{body_extra}
+<script src="../common.js?v=2" defer></script>{BACK_SCRIPT}{body_extra}
 </body>
 </html>
 '''

@@ -26,37 +26,29 @@
     }, 2400);
   };
 
-  // ---------- Appearance: Automatic (follows the device) → Light → Dark, like macOS and iOS ----------
+  // ---------- Appearance: Light (the default) or Dark, remembered once chosen ----------
   const toggle = document.getElementById('theme-toggle');
   if (toggle) {
-    const systemDark = matchMedia('(prefers-color-scheme: dark)');
-    const metaColors = [...document.querySelectorAll('meta[name="theme-color"]')];
-    const BAR = { light: '#ffffff', dark: '#141518' };
-    const MODES = ['auto', 'light', 'dark'];
-    const NAMES = { auto: 'Automatic', light: 'Light', dark: 'Dark' };
-    const ICONS = { auto: '#i-auto', light: '#i-sun', dark: '#i-moon' };
-    let mode = root.dataset.theme || 'auto';
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const NAMES = { light: 'Light', dark: 'Dark' };
+    const ICONS = { light: '#i-sun', dark: '#i-moon' };
+    let mode = root.dataset.theme === 'dark' ? 'dark' : 'light';
 
     const applyMode = () => {
-      if (mode === 'auto') delete root.dataset.theme; else root.dataset.theme = mode;
-      // Keep the browser's own address-bar tint in step with the page.
-      const effective = mode === 'auto' ? (systemDark.matches ? 'dark' : 'light') : mode;
-      metaColors.forEach((m) => {
-        m.content = mode === 'auto' ? (m.media.includes('dark') ? BAR.dark : BAR.light) : BAR[effective];
-      });
-      const nextMode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+      if (mode === 'dark') root.dataset.theme = 'dark'; else delete root.dataset.theme;
+      if (meta) meta.content = mode === 'dark' ? '#141518' : '#ffffff'; // keep the browser's own bar in step
+      const next = mode === 'dark' ? 'light' : 'dark';
       toggle.querySelector('use').setAttribute('href', ICONS[mode]);
-      toggle.setAttribute('aria-label', `Appearance: ${NAMES[mode]}. Switch to ${NAMES[nextMode]}`);
+      toggle.setAttribute('aria-label', `Appearance: ${NAMES[mode]}. Switch to ${NAMES[next]}`);
       toggle.title = `Appearance: ${NAMES[mode]}`;
     };
     toggle.addEventListener('click', () => {
-      mode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
-      try { mode === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', mode); } catch {}
+      mode = mode === 'dark' ? 'light' : 'dark';
+      try { mode === 'dark' ? localStorage.setItem('theme', 'dark') : localStorage.removeItem('theme'); } catch {}
       if (document.startViewTransition && !still()) document.startViewTransition(applyMode);
       else applyMode();
       if (status) status.textContent = `Appearance set to ${NAMES[mode]}`;
     });
-    systemDark.addEventListener('change', applyMode);
     applyMode();
   }
 

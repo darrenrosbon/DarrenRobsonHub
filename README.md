@@ -8,7 +8,7 @@ The personal site of Darren Robson, Data Reporting Specialist & Web Developer. I
 
 Hand-coded HTML, CSS and JavaScript. No frameworks, no build step, no trackers.
 
-- Light and dark themes. The site follows the device setting, and a toggle remembers your choice.
+- Light and dark themes. Light by default; a switch in the nav turns on dark mode and remembers the choice.
 - Responsive from 320 px up, with a full-screen menu on phones and tablets.
 - Accessible: skip link, visible focus rings, keyboard-friendly menu, screen-reader announcements, and respect for reduced motion and reduced transparency.
 - Fast: images are sized for each screen, nothing blocks the page from rendering, and the layout doesn't shift while loading.

@@ -229,7 +229,6 @@ if (grid) {
   new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => { size(); drawGrid(); }); })
     .observe(document.getElementById('main'));
   new MutationObserver(redraw).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw);
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }).observe(grid);
   document.addEventListener('visibilitychange', start);
 }

@@ -51,7 +51,7 @@
   --wrap: 1080px;
 }
 
-/* ---------- dark theme: follows the device, or the toggle ---------- */
+/* ---------- dark theme: only when the visitor picks it with the switch; light is the default ---------- */
 :root[data-theme="dark"] {
   --paper: oklch(19.5% 0.006 265); --mist: oklch(12.5% 0.005 265); --tile-dark: var(--surface); --surface: oklch(26% 0.008 265); --tile-bg: oklch(24% 0.008 265);
   --ink: oklch(12.5% 0.005 265); --ink-2: oklch(29% 0.009 265); --ink-3: oklch(37% 0.01 265);
@@ -62,19 +62,6 @@
   --edge: inset 0 1px 0 oklch(100% 0 0 / 0.07); --chip-shadow: none; --selection: oklch(72% 0.14 55 / 0.35);
   --grid-rgb: 240, 150, 90; --grid-line: 0.07; --grid-pulse: 0.4;
   color-scheme: dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: oklch(19.5% 0.006 265); --mist: oklch(12.5% 0.005 265); --tile-dark: var(--surface); --surface: oklch(26% 0.008 265); --tile-bg: oklch(24% 0.008 265);
-    --ink: oklch(12.5% 0.005 265); --ink-2: oklch(29% 0.009 265); --ink-3: oklch(37% 0.01 265);
-    --text: oklch(95% 0.003 265); --muted: oklch(72% 0.006 265); --muted-2: oklch(56% 0.006 265);
-    --line: oklch(100% 0 0 / 0.12); --line-strong: oklch(100% 0 0 / 0.2);
-    --accent-text: var(--accent-on-ink); --nav-bg: oklch(19.5% 0.006 265 / 0.62); --menu-bg: oklch(19.5% 0.006 265 / 0.9);
-  --pill-bg: oklch(57.5% 0.15 52); --pill-hover: oklch(61% 0.15 52);
-  --edge: inset 0 1px 0 oklch(100% 0 0 / 0.07); --chip-shadow: none; --selection: oklch(72% 0.14 55 / 0.35);
-    --grid-rgb: 240, 150, 90; --grid-line: 0.07; --grid-pulse: 0.4;
-    color-scheme: dark;
-  }
 }
 
 html, body { overflow-x: clip; }
@@ -196,7 +183,6 @@ main { position: relative; }
 .band--mist { background: var(--mist); }
 /* In dark mode the mist tone is darker than the page, so the band would look like a hole; match the sections around it. */
 :root[data-theme="dark"] .band--mist { background: var(--paper); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .band--mist { background: var(--paper); } }
 .band--ink { background: var(--ink); color: var(--on-ink); }
 .band__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--s3) var(--s5); margin-bottom: var(--s6); }
 .band h2 { font: 700 var(--h2)/1.05 var(--font-display); letter-spacing: -0.035em; }
