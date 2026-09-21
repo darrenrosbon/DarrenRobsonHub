@@ -1,0 +1,79 @@
+// Shared by every page: appearance switch, toast messages and back to top.
+// Wrapped in a block so its names never clash with the home page's script.js.
+{
+  const root = document.documentElement;
+  const status = document.getElementById('status');
+  const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Toast: a short visual confirmation; screen readers hear it through the status region ----------
+  let toastEl;
+  let toastTimer;
+  window.toast = (message) => {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.setAttribute('aria-hidden', 'true');
+      document.body.append(toastEl);
+    }
+    toastEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span></span>';
+    toastEl.querySelector('span').textContent = message;
+    toastEl.classList.add('is-shown');
+    if (status) status.textContent = message;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toastEl.classList.remove('is-shown');
+      if (status) status.textContent = '';
+    }, 2400);
+  };
+
+  // ---------- Appearance: Automatic (follows the device) → Light → Dark, like macOS and iOS ----------
+  const toggle = document.getElementById('theme-toggle');
+  if (toggle) {
+    const systemDark = matchMedia('(prefers-color-scheme: dark)');
+    const metaColors = [...document.querySelectorAll('meta[name="theme-color"]')];
+    const BAR = { light: '#ffffff', dark: '#141518' };
+    const MODES = ['auto', 'light', 'dark'];
+    const NAMES = { auto: 'Automatic', light: 'Light', dark: 'Dark' };
+    const ICONS = { auto: '#i-auto', light: '#i-sun', dark: '#i-moon' };
+    let mode = root.dataset.theme || 'auto';
+
+    const applyMode = () => {
+      if (mode === 'auto') delete root.dataset.theme; else root.dataset.theme = mode;
+      // Keep the browser's own address-bar tint in step with the page.
+      const effective = mode === 'auto' ? (systemDark.matches ? 'dark' : 'light') : mode;
+      metaColors.forEach((m) => {
+        m.content = mode === 'auto' ? (m.media.includes('dark') ? BAR.dark : BAR.light) : BAR[effective];
+      });
+      const nextMode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+      toggle.querySelector('use').setAttribute('href', ICONS[mode]);
+      toggle.setAttribute('aria-label', `Appearance: ${NAMES[mode]}. Switch to ${NAMES[nextMode]}`);
+      toggle.title = `Appearance: ${NAMES[mode]}`;
+    };
+    toggle.addEventListener('click', () => {
+      mode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+      try { mode === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', mode); } catch {}
+      if (document.startViewTransition && !still()) document.startViewTransition(applyMode);
+      else applyMode();
+      if (status) status.textContent = `Appearance set to ${NAMES[mode]}`;
+    });
+    systemDark.addEventListener('change', applyMode);
+    applyMode();
+  }
+
+  // ---------- Back to top: appears once the page has scrolled a fair way ----------
+  const toTop = document.querySelector('.to-top');
+  if (toTop) {
+    const update = () => {
+      const room = root.scrollHeight - innerHeight;
+      // Long pages show it after a screen of scrolling; shorter ones once past halfway. Pages that barely scroll never do.
+      toTop.classList.toggle('is-shown', room > innerHeight * 0.5 && scrollY > Math.min(innerHeight, room * 0.5));
+    };
+    addEventListener('scroll', update, { passive: true });
+    update();
+    toTop.addEventListener('click', () => {
+      scrollTo({ top: 0, behavior: still() ? 'auto' : 'smooth' });
+      // Keyboard users continue from the top of the page, not from the hidden button.
+      document.querySelector('.nav__mark')?.focus({ preventScroll: true });
+    });
+  }
+}

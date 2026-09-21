@@ -1,0 +1,38 @@
+name: Quality checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    name: HTML validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes html-validate@9 index.html 404.html cv/index.html certificates/*.html work/*.html
+
+  links:
+    name: Broken link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          # LinkedIn blocks automated requests (HTTP 999), so it is skipped.
+          args: --no-progress --exclude linkedin.com --exclude-path 404.html './**/*.html'
+          fail: true
+
+  lighthouse:
+    name: Lighthouse (performance, accessibility, best practices, SEO)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
