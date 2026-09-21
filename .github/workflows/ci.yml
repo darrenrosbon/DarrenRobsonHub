@@ -23,8 +23,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: lycheeverse/lychee-action@v2
         with:
-          # LinkedIn blocks automated requests (HTTP 999), so it is skipped.
-          args: --no-progress --exclude linkedin.com --exclude-path 404.html './**/*.html'
+          # LinkedIn blocks automated requests (HTTP 999), so it is skipped. The site's own absolute URLs (canonical,
+          # share tags) are skipped too: they only exist once this same push has deployed, and every page is
+          # already checked through its relative links.
+          args: --no-progress --exclude linkedin.com --exclude darrenrosbon.github.io/DarrenRobsonHub --exclude-path 404.html './**/*.html'
           fail: true
 
   lighthouse:
