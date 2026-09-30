@@ -85,6 +85,10 @@ PROJECTS = [
                  'Heritage and accreditation shown as facts: family owned since 1984, accredited shop, qualified artisans.']),
 ]
 
+# The CV lists Stonegate Paving in place of Rooted & Co. (no case-study page or screenshot for it yet).
+CV_PROJECTS = [dict(slug='stonegate-paving', name='Stonegate Paving', url='https://darrenrosbon.github.io/stonegate-paving/',
+                    what='Paving business site', role='Design + build') if p['slug'] == 'rooted-landscaping' else p for p in PROJECTS]
+
 SPRITE = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6.5 10.5 12 16l5.5-5.5M5 20h14"/></symbol>
   <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
@@ -252,7 +256,7 @@ def cv_page():
     projects = '\n'.join(
         f'''        <li><a class="sq" href="{p['url']}"><strong>{p['name'].replace('&', '&amp;')} <span aria-hidden="true">↗</span></strong>'''
         f'''<span>{p['what'].replace('Windows app + website', 'App + website').replace('Protocol launch site', 'ZK settlement site').replace('Security product site', 'Security monitoring site')}</span>'''
-        f'''<em>{p['role']}</em></a></li>''' for p in PROJECTS)
+        f'''<em>{p['role']}</em></a></li>''' for p in CV_PROJECTS)
     main = f'''<main id="main" class="cvpage">
   <div class="cvbar wrap">
     <a class="pill" href="../assets/cv/Darren_Robson_CV.pdf" download><svg aria-hidden="true"><use href="#i-down"/></svg>Download PDF</a>
