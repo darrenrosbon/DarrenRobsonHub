@@ -65,15 +65,15 @@ PROJECTS = [
                  'Six practice areas, each explained in one plain sentence.',
                  'Profiles of the senior attorneys, and a client testimonial.',
                  '“Book a consultation” placed in the hero and repeated down the page.']),
-    dict(slug='rooted-landscaping', name='Rooted & Co.', url='https://darrenrosbon.github.io/rooted-landscaping/', alt='Rooted & Co. homepage',
-         kind='Concept site', what='Landscaping business site', role='Design + build', status='Live concept',
-         lede='A lead-generation site concept for a landscaping company in the Portland metro area.',
-         idea=['A local trade business lives on quote requests and phone calls, so every section points back to one of those two actions.',
-               'Deep greens, full-bleed garden photography and a warm orange call to action make it feel like a crew you could call today.'],
-         points=['“Get a free quote” and the phone number are always one tap away in the nav.',
-                 'A before-and-after slider: drag the divider to see a lawn brought back.',
-                 'Six services with short, practical descriptions, and a four-step process that starts with a walk around the property.',
-                 'Trust signals up front: years in business, properties maintained, licensing and service area.']),
+    dict(slug='stonegate-paving', name='Stonegate Paving', url='https://darrenrosbon.github.io/stonegate-paving/', alt='Stonegate Paving homepage',
+         kind='Concept site', what='Paving business site', role='Design + build', status='Live concept',
+         lede='A lead-generation site concept for a paving and building company in Wierda Park, Centurion.',
+         idea=['A paving crew is hired on trust and a quick quote, so the page keeps two actions in reach: call or WhatsApp.',
+               'A near-black palette, condensed caps and a brick-gold accent feel like site signage, with a real pool-surround job as the hero.'],
+         points=['A hero with the call and WhatsApp buttons side by side, plus a floating WhatsApp button that follows you down the page.',
+                 'Eight services, from paving and bricklaying to waterproofing, each described in one practical sentence.',
+                 'Reviews with a 4.8 rating from 37 clients, and years in business shown up front.',
+                 'A quote form with a service dropdown, and the address and phone number repeated in the footer.']),
     dict(slug='kruger-body-paint', name='Kruger Body & Paint', url='https://darrenrosbon.github.io/kruger-body-paint/', alt='Kruger Body &amp; Paint homepage',
          kind='Concept site', what='Auto body shop site', role='Design + build', status='Live concept',
          lede='A website concept for a family-owned panel beater in Booysens, Johannesburg, styled like a workshop spec sheet.',
@@ -84,10 +84,6 @@ PROJECTS = [
                  'Estimate requests, a paint-code check and 24-hour towing placed up front.',
                  'Heritage and accreditation shown as facts: family owned since 1984, accredited shop, qualified artisans.']),
 ]
-
-# The CV lists Stonegate Paving in place of Rooted & Co. (no case-study page or screenshot for it yet).
-CV_PROJECTS = [dict(slug='stonegate-paving', name='Stonegate Paving', url='https://darrenrosbon.github.io/stonegate-paving/',
-                    what='Paving business site', role='Design + build') if p['slug'] == 'rooted-landscaping' else p for p in PROJECTS]
 
 SPRITE = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6.5 10.5 12 16l5.5-5.5M5 20h14"/></symbol>
@@ -256,7 +252,7 @@ def cv_page():
     projects = '\n'.join(
         f'''        <li><a class="sq" href="{p['url']}"><strong>{p['name'].replace('&', '&amp;')} <span aria-hidden="true">↗</span></strong>'''
         f'''<span>{p['what'].replace('Windows app + website', 'App + website').replace('Protocol launch site', 'ZK settlement site').replace('Security product site', 'Security monitoring site')}</span>'''
-        f'''<em>{p['role']}</em></a></li>''' for p in CV_PROJECTS)
+        f'''<em>{p['role']}</em></a></li>''' for p in PROJECTS)
     main = f'''<main id="main" class="cvpage">
   <div class="cvbar wrap">
     <a class="pill" href="../assets/cv/Darren_Robson_CV.pdf" download><svg aria-hidden="true"><use href="#i-down"/></svg>Download PDF</a>
