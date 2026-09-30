@@ -276,10 +276,11 @@ def cv_page():
 
       <h2>Web design portfolio</h2>
       <p><a href="https://robsonwebstudio.com">robsonwebstudio.com</a></p>
+      <p><a href="https://darrenrosbon.github.io/DarrenRobsonHub/">darrenrosbon.github.io/<br>DarrenRobsonHub</a></p>
 
       <h2>Key skills</h2>
       <h3>Data &amp; Reporting</h3>
-      <ul class="sheet__tags">{tags(['Excel', 'VBA/Macros', 'Google Sheets', 'PayPal &amp; Stripe data', 'Bookkeeping support', 'Data &amp; file organisation'])}</ul>
+      <ul class="sheet__tags">{tags(['Excel', 'VBA/Macros', 'Google Sheets', 'PayPal &amp; Stripe data', 'Bookkeeping support', 'Dashboard building', 'Data &amp; file organisation'])}</ul>
       <h3>Web</h3>
       <ul class="sheet__tags">{tags(['HTML', 'CSS', 'JavaScript', 'Responsive UI', 'Git/GitHub', 'GitHub Pages', 'Vercel', 'Website admin'])}</ul>
       <h3>IT &amp; Systems</h3>
