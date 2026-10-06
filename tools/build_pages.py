@@ -377,7 +377,7 @@ def cv_page():
       </section>
 
       <section aria-labelledby="s-projects">
-        <h2 class="band" id="s-projects">Selected web design projects</h2>
+        <h2 class="band" id="s-projects">Selected design projects</h2>
         <p class="sheet__scope">Own products and concept sites — designed and built end to end. <a href="https://robsonwebstudio.com">robsonwebstudio.com</a></p>
         <ul class="sheet__cards">
 {projects}
