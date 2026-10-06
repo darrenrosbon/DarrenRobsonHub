@@ -283,8 +283,12 @@ def cv_page():
       <h2>Key skills</h2>
       <h3>Data &amp; Reporting</h3>
       <ul class="sheet__tags">{tags(['Excel', 'VBA/Macros', 'Google Sheets', 'PayPal &amp; Stripe data', 'Bookkeeping support', 'Dashboard building', 'Data &amp; file organisation'])}</ul>
+      <h3>Design</h3>
+      <ul class="sheet__tags">{tags(['Figma', 'Photoshop'])}</ul>
       <h3>Web</h3>
-      <ul class="sheet__tags">{tags(['HTML', 'CSS', 'JavaScript', 'Responsive UI', 'Git/GitHub', 'GitHub Pages', 'Vercel', 'Website admin'])}</ul>
+      <ul class="sheet__tags">{tags(['HTML', 'CSS', 'JavaScript', 'C#', 'Responsive UI', 'Git', 'GitHub', 'GitHub Pages', 'Vercel', 'Supabase', 'Website admin'])}</ul>
+      <h3>AI &amp; Automation</h3>
+      <ul class="sheet__tags">{tags(['Claude API', 'WhatsApp Business API', 'Zapier'])}</ul>
       <h3>IT &amp; Systems</h3>
       <ul class="sheet__tags">{tags(['Hardware build &amp; repair', 'Windows Server 2016', 'Windows &amp; macOS'])}</ul>
 
