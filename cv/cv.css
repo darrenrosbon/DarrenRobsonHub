@@ -48,6 +48,8 @@
 .sheet__scope { color: var(--cv-muted); font-size: .75rem; font-style: italic; }
 .sheet__role + .sheet__scope { margin-top: .35rem; }
 .sheet__scope a { color: var(--cv-accent); font-style: normal; font-size: .8125rem; }
+.sheet__job + .sheet__job { margin-top: 1rem; }
+.sheet__tools { margin-top: .5rem; padding-top: .45rem; border-top: 1px solid var(--cv-line, rgb(0 0 0 / .12)); color: var(--cv-muted); font-size: .78rem; }
 .sheet__bullets { margin-top: .5rem !important; }
 .sheet__bullets li { position: relative; padding-left: 1.25rem; font-size: .875rem; }
 .sheet__bullets li + li { margin-top: .3rem; }

@@ -12,7 +12,7 @@ SITE = Path(__file__).resolve().parents[1]  # the site root, one level up from t
 # so rerun the script after editing index.html too.
 TODAY = date.today()
 UPDATED = f'Last updated <time datetime="{TODAY.isoformat()}">{TODAY:%B %Y}</time>'
-CSS_V = 35
+CSS_V = 36
 ORIGIN = 'https://darrenrosbon.github.io/DarrenRobsonHub/'
 
 CERTS = [
@@ -362,6 +362,21 @@ def cv_page():
 
       <section aria-labelledby="s-work">
         <h2 class="band" id="s-work">Work experience</h2>
+        <div class="sheet__job">
+          <div class="sheet__role">
+            <h3>Web Developer &amp; UI/UX Designer</h3>
+            <p class="sheet__org"><em>Independent (Robson Web Studio) — Remote</em><em>Jul 2024 – Present</em></p>
+          </div>
+          <p class="sheet__scope">Independent design and development practice, building own products and concept sites end to end alongside my reporting role.</p>
+          <ul class="sheet__bullets">
+            <li>Design and build responsive websites from layout and visual design.</li>
+            <li>Design mobile app flows in Figma, including onboarding, home, tracking and rewards screens.</li>
+            <li>Design and build Chroma.GG, a Windows app and website, as a solo developer.</li>
+            <li>Connect front ends to back ends and automations using Supabase, Zapier and the Claude API.</li>
+          </ul>
+          <p class="sheet__tools"><strong>Tools:</strong> Figma, Photoshop, HTML, CSS, JavaScript, C#, Supabase, Vercel</p>
+        </div>
+        <div class="sheet__job">
         <div class="sheet__role">
           <h3>Data Entry &amp; Reporting Specialist</h3>
           <span class="sheet__chip">18+ hrs/month saved</span>
@@ -374,6 +389,7 @@ def cv_page():
           <li>Automated the daily formatting of PayPal and Stripe transaction reports (~50 transactions per sheet) using VBA and Macros, cutting per-sheet processing time from ~30 minutes to near-instant — <strong>saving an estimated 18+ hours per month</strong> across daily, weekly, and monthly reporting cycles, while significantly reducing manual entry errors.</li>
           <li>Manage website content and product listings, keeping information accurate and up to date.</li>
         </ul>
+        </div>
       </section>
 
       <section aria-labelledby="s-projects">

@@ -235,6 +235,9 @@ main { position: relative; }
 .exp__org { color: var(--muted); margin-top: .25rem; }
 .exp__big { margin-top: var(--s5); font: 700 clamp(2.5rem, 5vw, 3.75rem)/1 var(--font-display); letter-spacing: -0.04em; }
 .exp__big span { color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.exp + .exp { margin-top: var(--s7); }
+.exp__tools { margin-top: var(--s3); color: var(--muted); font-size: var(--small); }
+.exp__tools strong { color: var(--text); font-weight: 600; }
 .exp__more { margin-top: var(--s4); }
 .exp__bigcap { margin-top: var(--s2); color: var(--muted); max-width: 22rem; }
 .exp ul { list-style: none; margin: 0; padding: 0; }
