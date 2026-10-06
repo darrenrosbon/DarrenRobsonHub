@@ -339,6 +339,13 @@ main { position: relative; }
   box-shadow: 0 0 0 1px var(--line), 0 30px 70px -30px oklch(0% 0 0 / 0.35), var(--edge); }
 .case__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 700ms var(--ease); }
 .case__shot a:hover img { transform: scale(1.02); }
+.case__screens { margin-top: var(--s7); }
+.case__screens h2 { font: 600 var(--h3)/1.2 var(--font-display); letter-spacing: -0.02em; margin-bottom: var(--s4); }
+.case__grid { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: var(--s4); }
+@media (max-width: 48rem) { .case__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.case__grid figure { margin: 0; }
+.case__grid img { width: 100%; height: auto; display: block; border-radius: 1.1rem; box-shadow: 0 10px 28px -14px rgb(0 0 0 / .35); }
+.case__grid figcaption { margin-top: var(--s2); color: var(--muted); font-size: var(--small); text-align: center; }
 .case__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--s6); margin-top: var(--s7); }
 .case__body h2 { font: 600 var(--h3)/1.2 var(--font-display); letter-spacing: -0.02em; margin-bottom: var(--s3); }
 .case__body p + p { margin-top: var(--s3); }

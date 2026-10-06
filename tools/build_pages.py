@@ -12,7 +12,7 @@ SITE = Path(__file__).resolve().parents[1]  # the site root, one level up from t
 # so rerun the script after editing index.html too.
 TODAY = date.today()
 UPDATED = f'Last updated <time datetime="{TODAY.isoformat()}">{TODAY:%B %Y}</time>'
-CSS_V = 33
+CSS_V = 35
 ORIGIN = 'https://darrenrosbon.github.io/DarrenRobsonHub/'
 
 CERTS = [
@@ -28,6 +28,40 @@ CERTS = [
 
 # Portfolio pieces are Darren's own products and concept sites, never client work.
 PROJECTS = [
+    dict(slug='walkies', name='Walkies', url='https://robsonwebstudio.com/figma.html', alt='Walkies app screens: home, active walk and rewards',
+         figma='https://www.figma.com/design/LqJj9WiqS7xjTNnFT09oZE/Dog-walking-app', cta='See it on robsonwebstudio.com',
+         kind='UI/UX design', what='Dog walking app design', role='UI/UX design', status='Figma design',
+         lede='A mobile app design for dog owners that turns everyday walks into small wins, with live walk tracking, goals, badges and rewards.',
+         idea=['A daily walk is easy to skip. The app makes the habit feel rewarding by showing progress, celebrating small wins and never nagging.',
+               'A calm green and cream palette, a friendly voice and photography of the dog keep it warm instead of feeling like a fitness tracker.'],
+         points=['A home screen with the dog front and centre, a progress ring for today and one big “Let’s go for a walk” button.',
+                 'An active-walk screen with a route map, live timer, distance and pace, and a clear finish button.',
+                 'Daily and weekly goals with progress bars, and a points breakdown after every walk.',
+                 'A streak, a badge shelf and a rewards screen where points turn into treats and perks.'],
+         screens=[('1-home', 'Home', 'Home screen: the dog, today’s progress and a start-walk button'),
+                  ('2-active-walk', 'Active walk', 'Active walk screen: route map, live timer, distance and pace'),
+                  ('3-completed-walk', 'Completed walk', 'Completed walk screen: summary and points earned'),
+                  ('4-goals', 'Goals', 'Goals screen: daily and weekly targets with progress bars'),
+                  ('5-accomplishments', 'Accomplishments', 'Accomplishments screen: streak and badge shelf'),
+                  ('6-rewards', 'Rewards', 'Rewards screen: points balance and treats to spend them on')]),
+    dict(slug='dayshift', name='Dayshift', url='https://robsonwebstudio.com/dayshift.html', alt='Dayshift app screens: onboarding, today and weekly planner',
+         cta='See it on robsonwebstudio.com',
+         kind='UI/UX design', what='Chore-sharing app design', role='UI/UX design', status='Figma design',
+         lede='A chore-sharing app design for shared households, built around fairness and how much energy each person has on the day.',
+         idea=['Chore apps tend to nag or keep score. Dayshift balances effort instead: every chore carries effort points, and each housemate checks in with their energy so the load adapts.',
+               'A warm coral and cream palette, soft cards and kind, plain copy keep it friendly for people who live together.'],
+         points=['An energy check-in (low, okay or charged) that shapes which chores land on you that day.',
+                 'A Today view with each housemate’s energy and a checklist of little wins, plus a weekly planner showing chores and effort points per day.',
+                 'A chore detail screen with small steps, and a swap-request flow that shows the weekly balance before a housemate accepts.',
+                 'A fairness screen that splits effort points across the household, and settings for members, the chore library and availability.'],
+         screens=[('1-onboarding', 'Onboarding', 'Onboarding screen: a happy home and a lighter load'),
+                  ('2-today', 'Today', 'Today screen: each housemate’s energy and a checklist of chores'),
+                  ('3-weekly-planner', 'Weekly planner', 'Weekly planner screen: the week as a calendar with effort points'),
+                  ('4-task-detail', 'Task detail', 'Chore details screen: assignee, small steps, swap or done'),
+                  ('5-swap-request', 'Swap request', 'Swap request dialog: a housemate proposes trading chores'),
+                  ('6-fairness', 'Fairness', 'Fairness screen: effort points split across the household'),
+                  ('7-energy-check-in', 'Energy check-in', 'Energy check-in sheet: low, okay or charged'),
+                  ('8-settings', 'Settings', 'Settings screen: members, chore library, energy and notifications')]),
     dict(slug='chroma-gg', name='Chroma.GG', url='https://darrenrosbon.github.io/chroma-gg/', alt='Chroma.GG homepage',
          kind='Own product', what='Windows app + website', role='Solo design + build', status='In development',
          lede='A Windows tray app for PC gamers that switches display profiles per game, with a crosshair, performance HUD and instant replay in one process.',
@@ -203,6 +237,17 @@ def work_page(i, p):
     idea = '\n'.join(f'      <p>{t}</p>' for t in p['idea'])
     points = '\n'.join(f'        <li>{t}</li>' for t in p['points'])
     img = f'../assets/projects/{s}'
+    figma = f'\n      <a class="more" href="{p["figma"]}">Open in Figma</a>' if p.get('figma') else ''
+    screens = ''
+    if p.get('screens'):
+        figs = '\n'.join(f'        <figure><img src="../assets/projects/{s}/{f}.webp" width="400" height="866" alt="{a}" loading="lazy"><figcaption>{c}</figcaption></figure>' for f, c, a in p['screens'])
+        screens = f'''  <section class="case__screens wrap" aria-labelledby="screens-h">
+    <h2 id="screens-h">The screens</h2>
+    <div class="case__grid" style="--cols: {6 if len(p['screens']) % 3 == 0 else 4}">
+{figs}
+    </div>
+  </section>
+'''
     main = f'''<main id="main" class="case">
   <header class="case__head wrap">
     <p class="viewer__eyebrow">{p['kind']} · {p['what']}</p>
@@ -214,15 +259,15 @@ def work_page(i, p):
       <div><dt>Status</dt><dd>{p['status']}</dd></div>
     </dl>
     <div class="viewer__cta">
-      <a class="pill" href="{p['url']}">Visit the live site<svg aria-hidden="true"><use href="#i-out"/></svg></a>
+      <a class="pill" href="{p['url']}">{p.get('cta', 'Visit the live site')}<svg aria-hidden="true"><use href="#i-out"/></svg></a>{figma}
     </div>
   </header>
   <figure class="case__shot wrap">
-    <a href="{p['url']}" aria-label="Visit the {p['name'].replace('&', '&amp;')} live site" style="view-transition-name: shot-{s}">
+    <a href="{p['url']}" aria-label="{p.get('cta', 'Visit the ' + p['name'].replace('&', '&amp;') + ' live site')}" style="view-transition-name: shot-{s}">
       <img src="{img}-960.webp" srcset="{img}-480.webp 480w, {img}-640.webp 640w, {img}-960.webp 960w" sizes="(max-width: 1080px) calc(100vw - 2.5rem), 1000px" width="960" height="600" alt="{p['alt']}" fetchpriority="high">
     </a>
   </figure>
-  <div class="case__body wrap">
+{screens}  <div class="case__body wrap">
     <section aria-labelledby="idea-h">
       <h2 id="idea-h">The idea</h2>
 {idea}
