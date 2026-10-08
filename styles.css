@@ -154,7 +154,7 @@ html.menu-open { overflow: hidden; }
 
 /* ---------- hero ---------- */
 .hero { text-align: center; padding-block: var(--s7) var(--s8); }
-/* Pulsing blueprint grid behind the nav, hero and highlights, after robsonwebstudio.com. It starts at the very top of the page
+/* Pulsing blueprint grid behind the nav, hero and highlights, after darrenrosbon.github.io/darren-portfolio-site. It starts at the very top of the page
  * (pulled up by the nav's height) and script.js sets its height to end exactly where the dark work band begins. Hero and
  * highlights share one plain background, so the grid looks the same all the way down. */
 main { position: relative; }

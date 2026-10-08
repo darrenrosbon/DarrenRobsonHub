@@ -125,7 +125,7 @@ if (photo && mark && CSS.supports('animation-timeline: scroll()')) {
 }
 
 // ---------- Background grid: faint blueprint lines with pulses that flare at crossings and run along the lines ----------
-// After the background on robsonwebstudio.com, redrawn with thin lines in the accent colour instead of ASCII.
+// After the background on darrenrosbon.github.io/darren-portfolio-site, redrawn with thin lines in the accent colour instead of ASCII.
 // It covers the hero and the highlights band.
 // Two stacked canvases keep it cheap: the lines are drawn once (again only on resize or theme change), and the
 // animated layer on top only clears and redraws the small squares around each live pulse, about 30 times a second.

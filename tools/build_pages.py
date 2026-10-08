@@ -28,8 +28,8 @@ CERTS = [
 
 # Portfolio pieces are Darren's own products and concept sites, never client work.
 PROJECTS = [
-    dict(slug='walkies', name='Walkies', url='https://robsonwebstudio.com/figma.html', alt='Walkies app screens: home, active walk and rewards',
-         figma='https://www.figma.com/design/LqJj9WiqS7xjTNnFT09oZE/Dog-walking-app', cta='See it on robsonwebstudio.com',
+    dict(slug='walkies', name='Walkies', url='https://darrenrosbon.github.io/darren-portfolio-site/figma.html', alt='Walkies app screens: home, active walk and rewards',
+         figma='https://www.figma.com/design/LqJj9WiqS7xjTNnFT09oZE/Dog-walking-app', cta='See it on darrenrosbon.github.io/darren-portfolio-site',
          kind='UI/UX design', what='Dog walking app design', role='UI/UX design', status='Figma design',
          lede='A mobile app design for dog owners that turns everyday walks into small wins, with live walk tracking, goals, badges and rewards.',
          idea=['A daily walk is easy to skip. The app makes the habit feel rewarding by showing progress, celebrating small wins and never nagging.',
@@ -44,8 +44,8 @@ PROJECTS = [
                   ('4-goals', 'Goals', 'Goals screen: daily and weekly targets with progress bars'),
                   ('5-accomplishments', 'Accomplishments', 'Accomplishments screen: streak and badge shelf'),
                   ('6-rewards', 'Rewards', 'Rewards screen: points balance and treats to spend them on')]),
-    dict(slug='dayshift', name='Dayshift', url='https://robsonwebstudio.com/dayshift.html', alt='Dayshift app screens: onboarding, today and weekly planner',
-         cta='See it on robsonwebstudio.com',
+    dict(slug='dayshift', name='Dayshift', url='https://darrenrosbon.github.io/darren-portfolio-site/dayshift.html', alt='Dayshift app screens: onboarding, today and weekly planner',
+         cta='See it on darrenrosbon.github.io/darren-portfolio-site',
          kind='UI/UX design', what='Chore-sharing app design', role='UI/UX design', status='Figma design',
          lede='A chore-sharing app design for shared households, built around fairness and how much energy each person has on the day.',
          idea=['Chore apps tend to nag or keep score. Dayshift balances effort instead: every chore carries effort points, and each housemate checks in with their energy so the load adapts.',
@@ -323,7 +323,7 @@ def cv_page():
       <p><a href="https://darrenrosbon.github.io/DarrenRobsonHub/">darrenrosbon.github.io/<br>DarrenRobsonHub</a></p>
 
       <h2>Web design portfolio</h2>
-      <p><a href="https://robsonwebstudio.com">robsonwebstudio.com</a></p>
+      <p><a href="https://darrenrosbon.github.io/darren-portfolio-site/">darrenrosbon.github.io/darren-portfolio-site</a></p>
 
       <h2>Key skills</h2>
       <h3>Data &amp; Reporting</h3>
@@ -394,7 +394,7 @@ def cv_page():
 
       <section aria-labelledby="s-projects">
         <h2 class="band" id="s-projects">Selected design projects</h2>
-        <p class="sheet__scope">Own products and concept sites — designed and built end to end. <a href="https://robsonwebstudio.com">robsonwebstudio.com</a></p>
+        <p class="sheet__scope">Own products and concept sites — designed and built end to end. <a href="https://darrenrosbon.github.io/darren-portfolio-site/">darrenrosbon.github.io/darren-portfolio-site</a></p>
         <ul class="sheet__cards">
 {projects}
         </ul>
