@@ -45,40 +45,21 @@ menu.addEventListener('close', () => { root.classList.remove('menu-open'); openB
 menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 addEventListener('resize', () => { if (menu.open && innerWidth > 960) closeMenu(); });
 
-// ---------- Gallery arrows: one card at a time; native scroll-snap supplies touch momentum ----------
-const track = document.getElementById('track');
-const [prev, next] = document.querySelectorAll('.round[data-dir]');
-const step = () => track.querySelector('.shot').getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 24);
-const updateArrows = () => {
-  prev.disabled = track.scrollLeft <= 2;
-  next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-};
-[prev, next].forEach((b) => b.addEventListener('click', () => {
-  track.scrollBy({ left: step() * Number(b.dataset.dir), behavior: reduceMotion() ? 'auto' : 'smooth' });
-}));
-track.addEventListener('scroll', updateArrows, { passive: true });
-
-// Keyboard: ← → move one project at a time, Home / End jump to the first / last.
-// On a project link, focus moves to the neighbouring project (and scrolls it into view);
-// on the gallery itself, it scrolls by one card like the arrow buttons.
-const shotLinks = [...track.querySelectorAll('.shot a')];
-track.addEventListener('keydown', (e) => {
-  const keys = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity };
-  if (!(e.key in keys) || e.altKey || e.ctrlKey || e.metaKey) return;
-  e.preventDefault();
-  const dir = keys[e.key];
-  const at = shotLinks.indexOf(document.activeElement);
-  if (at === -1) {
-    const left = Math.abs(dir) === Infinity ? (dir > 0 ? track.scrollWidth : 0) : track.scrollLeft + step() * dir;
-    track.scrollTo({ left, behavior: reduceMotion() ? 'auto' : 'smooth' });
-    return;
-  }
-  const next = Math.max(0, Math.min(shotLinks.length - 1, Math.abs(dir) === Infinity ? (dir > 0 ? shotLinks.length - 1 : 0) : at + dir));
-  shotLinks[next].focus({ preventScroll: true });
-  shotLinks[next].closest('.shot').scrollIntoView({ block: 'nearest', inline: 'start', behavior: reduceMotion() ? 'auto' : 'smooth' });
-});
-addEventListener('resize', updateArrows);
-updateArrows();
+// ---------- Work filters: show only the projects of one kind; without JS the buttons stay hidden and every project shows ----------
+const filters = document.querySelector('.work__filters');
+if (filters) {
+  filters.hidden = false;
+  const items = [...document.querySelectorAll('.work__item')];
+  const announce = document.getElementById('status');
+  filters.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-filter]');
+    if (!btn) return;
+    filters.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    const kind = btn.dataset.filter;
+    items.forEach((li) => { li.hidden = kind !== 'all' && !li.dataset.kinds.split(' ').includes(kind); });
+    if (announce) announce.textContent = `Showing ${items.filter((li) => !li.hidden).length} projects`;
+  });
+}
 
 // ---------- Copy email: silent success, tick for 2 s, announced to screen readers ----------
 document.querySelectorAll('[data-copy-email]').forEach((btn) => {
@@ -126,7 +107,7 @@ if (photo && mark && CSS.supports('animation-timeline: scroll()')) {
 
 // ---------- Background grid: faint blueprint lines with pulses that flare at crossings and run along the lines ----------
 // After the background on darrenrosbon.github.io/darren-portfolio-site, redrawn with thin lines in the accent colour instead of ASCII.
-// It covers the hero and the highlights band.
+// It is fixed to the viewport and slides with the page by whole grid cells, so it backs every section.
 // Two stacked canvases keep it cheap: the lines are drawn once (again only on resize or theme change), and the
 // animated layer on top only clears and redraws the small squares around each live pulse, about 30 times a second.
 const grid = document.querySelector('.grid-bg');
@@ -153,12 +134,11 @@ if (grid) {
     lineA = parseFloat(cs.getPropertyValue('--grid-line')) || lineA;
     pulseA = parseFloat(cs.getPropertyValue('--grid-pulse')) || pulseA;
   };
-  const lastBand = document.getElementById('highlights');
-  const nav = document.querySelector('.nav');
   const size = () => {
     dpr = Math.min(devicePixelRatio || 1, 2); // above 2x the extra sharpness isn't worth the memory
-    // It starts behind the nav. Round the height to whole device pixels so the bitmap maps 1:1 onto the screen.
-    const cssH = Math.round((nav.offsetHeight + lastBand.offsetTop + lastBand.offsetHeight) * dpr) / dpr;
+    // One extra cell of height lets the canvas slide up by up to a cell without showing a gap at the bottom.
+    // Round to whole device pixels so the bitmap maps 1:1 onto the screen.
+    const cssH = Math.round((innerHeight + GAP) * dpr) / dpr;
     px = Math.max(1, Math.floor(dpr)) / dpr; // line width: one CSS pixel, rounded to whole device pixels
     for (const [c, cx] of [[grid, ctx], [fx, fctx]]) {
       c.style.height = `${cssH}px`;
@@ -223,13 +203,25 @@ if (grid) {
     frame = requestAnimationFrame(loop);
   };
   const redraw = () => { readColours(); drawGrid(); };
+  // Slide both layers with the page by whole device pixels, wrapping every cell, so the lines never blur and the loop is seamless.
+  let slideFrame = 0;
+  const slide = () => {
+    slideFrame = 0;
+    const cell = GAP * dpr;
+    const y = -(Math.round(scrollY * dpr) % cell) / dpr;
+    grid.style.transform = fx.style.transform = `translate3d(0, ${y}px, 0)`;
+  };
+  addEventListener('scroll', () => { if (!slideFrame) slideFrame = requestAnimationFrame(slide); }, { passive: true });
 
-  readColours(); size(); drawGrid(); start();
+  readColours(); size(); drawGrid(); slide(); start();
   let resizeFrame;
-  new ResizeObserver(() => { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => { size(); drawGrid(); }); })
-    .observe(document.getElementById('main'));
+  // Phone browsers resize the viewport as the address bar slides away; only rebuild when the width changes or the height outgrows the canvas.
+  addEventListener('resize', () => {
+    if (Math.abs(innerWidth - W) < 1 && innerHeight + GAP <= H + 1) return;
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => { size(); drawGrid(); slide(); });
+  });
   new MutationObserver(redraw).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }).observe(grid);
   document.addEventListener('visibilitychange', start);
 }
 
@@ -261,3 +253,67 @@ if (!reduceMotion() && 'IntersectionObserver' in window) {
     seen.observe(el);
   });
 }
+
+// ---------- Ripples: faint ASCII waves that spread from the cursor, over the whole page ----------
+// Drawn only while a ripple is alive, so the page costs nothing when the cursor is still. Skipped for reduced motion.
+const ascii = document.querySelector('.ascii-bg');
+if (ascii && !reduceMotion()) {
+  const ctx = ascii.getContext('2d');
+  const RAMP = ' .·:;-=+*#%@';
+  const CW = 8.4, CH = 15, LIFE = 2400, STEP = 45;
+  let W = 0, H = 0, dpr = 1, rgb = '226, 128, 60', ripples = [], last = { x: -999, y: -999 }, frame = 0;
+
+  const size = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = document.documentElement.clientWidth; H = innerHeight;
+    ascii.style.height = `${H}px`;
+    ascii.width = Math.round(W * dpr); ascii.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  const colours = () => { rgb = getComputedStyle(root).getPropertyValue('--grid-rgb').trim() || rgb; };
+  const draw = (t) => {
+    ripples = ripples.filter((r) => t - r.t < LIFE);
+    ctx.clearRect(0, 0, W, H);
+    if (!ripples.length) { frame = 0; return; }
+    ctx.font = '14px ui-monospace, Consolas, "Courier New", monospace';
+    for (const r of ripples) {
+      // only the ring's neighbourhood can be marked, so walk just that box
+      const age = (t - r.t) / 1000, front = age * 260, reach = front + 70;
+      const x0 = Math.max(0, Math.floor((r.x - reach) / CW)), x1 = Math.min(Math.ceil(W / CW), Math.ceil((r.x + reach) / CW));
+      const y0 = Math.max(0, Math.floor((r.y - reach) / CH)), y1 = Math.min(Math.ceil(H / CH), Math.ceil((r.y + reach) / CH));
+      for (let j = y0; j < y1; j++) for (let i = x0; i < x1; i++) {
+        const px = i * CW, py = j * CH;
+        const dd = Math.hypot(px - r.x, (py - r.y) * 1.2) - front;
+        const env = Math.exp(-dd * dd / 5000) * Math.exp(-age * 1.6) * r.a;
+        if (env < 0.04) continue;
+        const h = Math.min(1, Math.max(0, 0.5 + Math.cos(dd * 0.09) * env * 0.32));
+        const k = Math.abs(h - 0.5) * 2;
+        if (k < 0.06) continue;
+        ctx.fillStyle = `rgba(${rgb}, ${0.05 + Math.min(1, k * 1.2 + env * 0.3) * 0.3})`;
+        ctx.fillText(RAMP[Math.min(RAMP.length - 1, (h * RAMP.length) | 0)], px, py + CH - 3);
+      }
+    }
+    frame = requestAnimationFrame(draw);
+  };
+  const spawn = (x, y, a) => {
+    ripples.push({ x, y, t: performance.now(), a });
+    if (!frame) frame = requestAnimationFrame(draw);
+  };
+
+  addEventListener('pointermove', (e) => {
+    const x = e.clientX, y = e.clientY;
+    if (Math.hypot(x - last.x, y - last.y) < STEP) return;
+    last = { x, y };
+    spawn(x, y, 0.7);
+  }, { passive: true });
+  addEventListener('pointerdown', (e) => {
+    spawn(e.clientX, e.clientY, 1.2);
+  }, { passive: true });
+
+  size(); colours();
+  addEventListener('resize', () => { if (Math.abs(innerWidth - W) >= 1 || innerHeight > H + 1) size(); });
+  new MutationObserver(colours).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
+// ---------- Print: closed jobs wouldn't print, so open them all first ----------
+addEventListener('beforeprint', () => document.querySelectorAll('.job').forEach((d) => { d.open = true; }));
